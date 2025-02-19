@@ -128,7 +128,7 @@ public final class TravelDemandGeneratorMCR {
 
             //from here
             tripGenerationMandatory = new TripGeneration(dataSet, mandatoryPurposes, new MitoTripFactory7days());
-            ((TripGeneration) tripGenerationMandatory).registerTripGenerator(Purpose.HBW, new MitoTripFactory7days(), TripGeneratorType.PersonBasedHurdlePolr,new WorkFromHomeTripCalculatorMCR(dataSet),
+            ((TripGeneration) tripGenerationMandatory).registerTripGenerator(Purpose.HBW, new MitoTripFactory7days(), TripGeneratorType.PersonBasedHurdlePolr,new TripGenCalculatorMCR(dataSet),
                     new AttractionCalculatorMCR(dataSet,Purpose.HBW));
             ((TripGeneration) tripGenerationMandatory).registerTripGenerator(Purpose.HBE, new MitoTripFactory7days(), TripGeneratorType.PersonBasedHurdlePolr,new TripGenCalculatorMCR(dataSet),
                     new AttractionCalculatorMCR(dataSet,Purpose.HBE));
