@@ -81,7 +81,7 @@ public class OmxSkimsReaderMCR extends AbstractOmxReader implements SkimsReader 
     }
 
     private void readTravelTimeSkim(String name, String omxFilePath, String matrix) {
-        // convert second to min, because time is translated to min in mode choice estimatio
+        // convert second to min, because time is translated to min in mode choice estimation, also min is used in time of day choice
         ((SkimTravelTimes) dataSet.getTravelTimes()).readSkim(name, Resources.instance.getRelativePath(omxFilePath).toString(),
                 Resources.instance.getString(matrix), 1/60.);
     }

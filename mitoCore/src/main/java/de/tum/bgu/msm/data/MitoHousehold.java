@@ -21,9 +21,9 @@ public class MitoHousehold implements Id, MicroLocation {
     private int monthlyIncome_EUR;
     private int economicStatus;
     private final int autos;
-    private MitoZone homeZone;
-    private Coordinate homeLocation;
     private final boolean modelled;
+    private Coordinate homeLocation;
+    private MitoZone homeZone;
     private final EnumMap<Purpose, List<MitoTrip>> tripsByPurpose = new EnumMap<>(Purpose.class);
     private final EnumMap<Purpose, Double> travelTimeBudgetByPurpose= new EnumMap<>(Purpose.class);
 
@@ -118,10 +118,6 @@ public class MitoHousehold implements Id, MicroLocation {
         this.economicStatus = economicStatus;
     }
 
-    public Coordinate getHomeLocation() {
-        return homeLocation;
-    }
-
     public void setHomeLocation(Coordinate homeLocation) {
         this.homeLocation = homeLocation;
     }
@@ -169,16 +165,6 @@ public class MitoHousehold implements Id, MicroLocation {
     }
 
     @Override
-    public Coordinate getCoordinate() {
-        return homeLocation;
-    }
-
-    @Override
-    public int getZoneId() {
-        return homeZone.getId();
-    }
-
-    @Override
     public int hashCode() {
         return hhId;
     }
@@ -194,5 +180,15 @@ public class MitoHousehold implements Id, MicroLocation {
 
     public boolean isModelled() {
         return modelled;
+    }
+
+    @Override
+    public Coordinate getCoordinate() {
+        return homeLocation;
+    }
+
+    @Override
+    public int getZoneId() {
+        return homeZone.getId();
     }
 }

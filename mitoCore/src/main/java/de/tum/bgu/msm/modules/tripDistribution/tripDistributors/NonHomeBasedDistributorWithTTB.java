@@ -82,7 +82,7 @@ public class NonHomeBasedDistributorWithTTB extends NonHomeBasedDistributor {
         });
 
         int destinationInternalId = MitoUtil.select(destinationProbabilities, random);
-        return zonesCopy.get(row.getIdForInternalIndex(destinationInternalId));
+        return zonesCopy.get(row.getIdForInternalIndex(destinationInternalId)).getRandomBuilding(purpose,random);
     }
 
     @Override

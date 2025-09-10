@@ -52,7 +52,7 @@ public class NonHomeBasedDistributor extends AbstractDistributor {
         }
     }
 
-    private MitoZone findRandomOrigin(MitoHousehold household, MitoTrip trip, Purpose priorPurpose) {
+    private Location findRandomOrigin(MitoHousehold household, MitoTrip trip, Purpose priorPurpose) {
         randomFlag = true;
 
         int priorPurposeCategoryIndex = allPersonCategories == null ? 0 : allPersonCategories.get(priorPurpose).get(trip.getPerson().getId());
@@ -60,6 +60,6 @@ public class NonHomeBasedDistributor extends AbstractDistributor {
                 get(priorPurposeCategoryIndex).getUtilityMatrix().viewRow(household.getHomeZone().getId());
         final int destinationInternalId = MitoUtil.select(originProbabilities.toNonIndexedArray(), random);
 
-        return zonesCopy.get(originProbabilities.getIdForInternalIndex(destinationInternalId));
+        return zonesCopy.get(originProbabilities.getIdForInternalIndex(destinationInternalId)).getRandomBuilding(purpose, random);
     }
 }

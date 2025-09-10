@@ -24,6 +24,8 @@ public class ModeChoice extends Module {
 
     private final static Logger logger = LogManager.getLogger(ModeChoice.class);
 
+    private boolean finishedSamplingPersonErrorTerms = false;
+
     private final Map<Purpose, ModeChoiceCalculator> modeChoiceCalculatorByPurpose = new EnumMap<>(Purpose.class);
 
     public ModeChoice(DataSet dataSet, List<Purpose> purposes) {
@@ -54,14 +56,19 @@ public class ModeChoice extends Module {
     }
 
     private void samplePersonErrorTerms() {
-        Purpose refPurpose = Purpose.valueOf(Resources.instance.getString(MC_STATIC_PERSON_ERROR_TERMS_NEST_STRUCTURE));
-        ModeChoiceCalculator refCalculator = modeChoiceCalculatorByPurpose.get(refPurpose);
-        logger.info("Sampling person-level error terms based on choices and nesting structure for " + refPurpose + ".");
-        ErrorTerms<Mode> errorTermSampler = new ErrorTerms<>(Mode.class,refCalculator.getChoiceSet(),refCalculator.getNests(),MitoUtil.getRandomObject().nextInt());
-        for (MitoHousehold household : dataSet.getModelledHouseholds().values()) {
-            for(MitoPerson person : household.getPersons().values()) {
-                person.setErrorTerms(errorTermSampler.sampleErrorTerms());
+        if(finishedSamplingPersonErrorTerms) {
+            logger.warn("Person-level error terms already sampled, will not resample. This message should only show during mode choice calibration!");
+        } else {
+            Purpose refPurpose = Purpose.valueOf(Resources.instance.getString(MC_STATIC_PERSON_ERROR_TERMS_NEST_STRUCTURE));
+            ModeChoiceCalculator refCalculator = modeChoiceCalculatorByPurpose.get(refPurpose);
+            logger.info("Sampling person-level error terms based on choices and nesting structure for " + refPurpose + ".");
+            ErrorTerms<Mode> errorTermSampler = new ErrorTerms<>(Mode.class,refCalculator.getChoiceSet(),refCalculator.getNests(),MitoUtil.getRandomObject().nextInt());
+            for (MitoHousehold household : dataSet.getModelledHouseholds().values()) {
+                for(MitoPerson person : household.getPersons().values()) {
+                    person.setErrorTerms(errorTermSampler.sampleErrorTerms());
+                }
             }
+            finishedSamplingPersonErrorTerms = true;
         }
     }
 

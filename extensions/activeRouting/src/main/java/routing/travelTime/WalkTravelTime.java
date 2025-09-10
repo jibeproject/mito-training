@@ -14,7 +14,7 @@ public class WalkTravelTime implements TravelTime {
     @Inject WalkTravelTime() {
     }
 
-    @Inject public WalkTravelTime(WalkLinkSpeedCalculator linkSpeedCalculator) {
+    public WalkTravelTime(WalkLinkSpeedCalculator linkSpeedCalculator) {
         this.linkSpeedCalculator = linkSpeedCalculator;
     }
 

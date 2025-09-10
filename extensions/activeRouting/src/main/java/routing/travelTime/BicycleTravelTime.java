@@ -16,7 +16,7 @@ public class BicycleTravelTime implements TravelTime {
     BicycleTravelTime() {
     }
 
-    @Inject public BicycleTravelTime(BicycleLinkSpeedCalculator linkSpeedCalculator) {
+    public BicycleTravelTime(BicycleLinkSpeedCalculator linkSpeedCalculator) {
         this.linkSpeedCalculator = linkSpeedCalculator;
     }
 

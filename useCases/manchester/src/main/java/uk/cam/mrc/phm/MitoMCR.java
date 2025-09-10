@@ -54,7 +54,7 @@ public class MitoMCR {
 
             for (Person person : dataSet.getPopulation().getPersons().values()){
                 Day day = Day.valueOf((String)person.getAttributes().getAttribute("day"));
-                populationByDay.getOrDefault(day, PopulationUtils.createPopulation(ConfigUtils.createConfig())).addPerson(person);
+                populationByDay.computeIfAbsent(day, p -> PopulationUtils.createPopulation(ConfigUtils.createConfig())).addPerson(person);
             }
 
             for (Day day : Day.values()) {

@@ -5,23 +5,27 @@ import org.matsim.api.core.v01.IdMap;
 import org.matsim.api.core.v01.events.LinkEnterEvent;
 import org.matsim.api.core.v01.events.handler.LinkEnterEventHandler;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.vehicles.MatsimVehicleReader;
-import org.matsim.vehicles.VehicleUtils;
+import org.matsim.vehicles.Vehicle;
 import org.matsim.vehicles.Vehicles;
 
 public class DailyVolumeEventHandler implements LinkEnterEventHandler {
+
+    private final Vehicles vehicles;
 
     private final IdMap<Link, Integer> bikeVolumes = new IdMap<>(Link.class);
     private final IdMap<Link, Integer> pedVolumes = new IdMap<>(Link.class);
     private final IdMap<Link, Integer> carVolumes = new IdMap<>(Link.class);
     private final IdMap<Link, Integer> truckVolumes = new IdMap<>(Link.class);
 
+    public DailyVolumeEventHandler(Vehicles vehicles) {
+        this.vehicles = vehicles;
+    }
+
     @Override
     public void handleEvent(LinkEnterEvent event) {
         Id<Link> linkId = event.getLinkId();
-
-       String[] idSplit = event.getVehicleId().toString().split("_");
-        String mode = idSplit[idSplit.length - 1];
+        Id<Vehicle> vehicleId = event.getVehicleId();
+        String mode = vehicles.getVehicles().get(vehicleId).getType().getNetworkMode();
 
         if(mode.equals("bike")) {
             bikeVolumes.put(linkId, bikeVolumes.getOrDefault(linkId,0) + 1);

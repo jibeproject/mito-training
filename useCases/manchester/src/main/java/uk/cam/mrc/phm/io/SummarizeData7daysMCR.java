@@ -48,9 +48,9 @@ public class SummarizeData7daysMCR {
             pwh.print(",");
             pwh.print(homeZone.getZoneId());
             pwh.print(",");
-            pwh.print(hh.getHomeLocation().x);
+            pwh.print(hh.getCoordinate().x);
             pwh.print(",");
-            pwh.print(hh.getHomeLocation().y);
+            pwh.print(hh.getCoordinate().y);
             pwh.print(",");
             pwh.print(hh.isModelled() ? 1 : 0);
             pwh.print(",");
@@ -119,10 +119,30 @@ public class SummarizeData7daysMCR {
         pwp.close();
     }
 
+    private static String getLocationType(Location loc) {
+        if(loc instanceof MitoHousehold) {
+            return "household";
+        } else if (loc instanceof MitoVacantDwelling) {
+            return "vacantDwelling";
+        } else if (loc instanceof MitoJob) {
+            return "job";
+        } else if (loc instanceof MitoPoi) {
+            return "poi";
+        } else if (loc instanceof MitoZoneCentroid) {
+            return "zoneCentroid";
+        } else if (loc instanceof MitoSchool){
+            return "school";
+        } else {
+            return loc.getClass().getName();
+        }
+    }
+
     public static void writeTrips(DataSet dataSet, PrintWriter pwh, Collection<MitoTrip> tripsToPrint) {
-        pwh.println("hh.id,p.ID,t.id,origin,originX,originY,destination,destinationX,destinationY," +
+        pwh.println("hh.id,p.ID,t.id," +
+                "originZone,originType,originId,originX,originY," +
+                "destinationZone,destinationType,destinationId,destinationX,destinationY," +
                 "t.purpose,t.distance_walk,t.distance_bike,t.distance_auto,time_auto,time_pt,time_walk,time_bike," +
-                "mode,departure_day,departure_time,departure_time_return");
+                "mode,departure_day,departure_time,activity_duration,departure_time_return");
 
         for(MitoTrip trip : tripsToPrint) {
             pwh.print(trip.getPerson().getHousehold().getId());
@@ -132,13 +152,14 @@ public class SummarizeData7daysMCR {
             pwh.print(trip.getId());
             pwh.print(",");
             Location origin = trip.getTripOrigin();
-            String originId = "null";
-            if(origin != null) {
-                originId = String.valueOf(origin.getZoneId());
-            }
-            pwh.print(originId);
+            pwh.print(origin == null ? "null" : String.valueOf(origin.getZoneId()));
             pwh.print(",");
-
+            pwh.print(getLocationType(origin));
+            pwh.print(",");
+            if(origin instanceof Id) {
+                pwh.print(((Id) origin).getId());
+            }
+            pwh.print(",");
             if(origin instanceof MicroLocation){
                 pwh.print(((MicroLocation) origin).getCoordinate().x);
                 pwh.print(",");
@@ -161,11 +182,13 @@ public class SummarizeData7daysMCR {
             }
 
             Location destination = trip.getTripDestination();
-            String destinationId = "null";
-            if(destination != null) {
-                destinationId = String.valueOf(destination.getZoneId());
+            pwh.print(destination == null ? "null" : String.valueOf(destination.getZoneId()));
+            pwh.print(",");
+            pwh.print(getLocationType(destination));
+            pwh.print(",");
+            if(destination instanceof Id) {
+                pwh.print(((Id) destination).getId());
             }
-            pwh.print(destinationId);
             pwh.print(",");
             if(destination instanceof MicroLocation){
                 pwh.print(((MicroLocation) destination).getCoordinate().x);
@@ -221,6 +244,8 @@ public class SummarizeData7daysMCR {
             pwh.print(((MitoTrip7days)trip).getDepartureDay());
             pwh.print(",");
             pwh.print(trip.getDepartureInMinutes());
+            pwh.print(",");
+            pwh.print(trip.getActivityDurationInMinutes());
             int departureOfReturnTrip = trip.getDepartureInMinutesReturnTrip();
             if (departureOfReturnTrip != -1){
                 pwh.print(",");

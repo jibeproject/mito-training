@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 public class DestinationUtilityCalculatorRrtMCR extends AbstractDestinationUtilityCalculator {
 
     //when no mode set, apply constant RRT distance decay to all population rather than by car ownership
-    private final static double[] DISTANCE_PARAMS_RRT_noModeSet = {-0.12877572260971806};
+    private final static double[] DISTANCE_PARAMS_RRT_noModeSet = {-0.12078707624647383};
     private final static double IMPEDANCE_PARAM_RRT_noModeSet = 20;
 
     private final static double[] DISTANCE_PARAMS_RRT_withModeSet = {-0.42720955240418723, -0.11091417841660255, -0.11442498509125135}; //TODO: calibrate

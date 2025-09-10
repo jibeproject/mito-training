@@ -75,7 +75,7 @@ public class HouseholdsCoordReaderMEL extends AbstractCsvReader {
             */
             hh.setHomeLocation(zone.getRandomCoord(MitoUtil.getRandomObject()));
             hh.setHomeZone(zone);
-            zone.addHousehold();
+            zone.addHousehold(hh);
         }
     }
 

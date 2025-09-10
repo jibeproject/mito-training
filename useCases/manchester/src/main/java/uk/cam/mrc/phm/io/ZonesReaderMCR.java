@@ -10,6 +10,7 @@ import de.tum.bgu.msm.util.MitoUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.matsim.core.utils.gis.ShapeFileReader;
 
@@ -20,8 +21,11 @@ import org.matsim.core.utils.gis.ShapeFileReader;
 public class ZonesReaderMCR extends AbstractCsvReader {
 
     private static final Logger logger = LogManager.getLogger(ZonesReaderMCR.class);
-    private int idIndex;
-    private int areaTypeIndex;
+    private int posId;
+    private int posAreaType;
+    private int posVacancyRate;
+    private int posCentroidX;
+    private int posCentroidY;
 
     public ZonesReaderMCR(DataSet dataSet) {
         super(dataSet);
@@ -47,16 +51,24 @@ public class ZonesReaderMCR extends AbstractCsvReader {
 
     @Override
     protected void processHeader(String[] header) {
-        idIndex = MitoUtil.findPositionInArray("oaID", header);
-        areaTypeIndex = MitoUtil.findPositionInArray("urbanType", header);
+        posId = MitoUtil.findPositionInArray("oaID", header);
+        posAreaType = MitoUtil.findPositionInArray("urbanType", header);
+        posVacancyRate = MitoUtil.findPositionInArray("percentageVacantDwellings", header);
+        posCentroidX = MitoUtil.findPositionInArray("popCentroid_x",header);
+        posCentroidY = MitoUtil.findPositionInArray("popCentroid_y",header);
     }
 
     @Override
     protected void processRecord(String[] record) {
-        int zoneId = Integer.parseInt(record[idIndex]);
-        int urbanType = Integer.parseInt(record[areaTypeIndex]);
+        int zoneId = Integer.parseInt(record[posId]);
+        int urbanType = Integer.parseInt(record[posAreaType]);
+        double vacancyRate = Double.parseDouble(record[posVacancyRate]);
+        double centroidX = Double.parseDouble(record[posCentroidX]);
+        double centroidY = Double.parseDouble(record[posCentroidY]);
         MitoZone zone = new MitoZone(zoneId, null);
         zone.setAreaTypeR(urbanType == 1? AreaTypes.RType.URBAN : AreaTypes.RType.RURAL);
+        zone.setVacancyRate(vacancyRate);
+        zone.setCentroid(new Coordinate(centroidX,centroidY));
         dataSet.addZone(zone);
     }
 }

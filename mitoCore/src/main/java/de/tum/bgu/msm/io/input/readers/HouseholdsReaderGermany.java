@@ -105,7 +105,7 @@ public class HouseholdsReaderGermany extends AbstractCsvReader {
             Double.parseDouble(record[posCoordX]), Double.parseDouble(record[posCoordY]));
             hh.setHomeLocation(homeLocation);
             hh.setHomeZone(zone);
-            zone.addHousehold();
+            zone.addHousehold(hh);
     }
     }
 }

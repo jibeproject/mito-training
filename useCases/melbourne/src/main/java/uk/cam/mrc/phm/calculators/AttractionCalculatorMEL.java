@@ -31,7 +31,7 @@ public class AttractionCalculatorMEL implements AttractionCalculator {
         for (MitoZone zone : dataSet.getZones().values()) {
                 float tripAttraction = 0;
                 for (ExplanatoryVariable variable : ExplanatoryVariable.values()) {
-                    float attribute;
+                    double attribute;
                     if(HH.equals(variable)) {
                         attribute = zone.getNumberOfHouseholds();
                     }else if(zone.getPoiWeightsByType().get(variable.toString())==null) {

@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import de.tum.bgu.msm.data.jobTypes.Category;
 import de.tum.bgu.msm.data.jobTypes.JobType;
+import de.tum.bgu.msm.util.MitoUtil;
 import de.tum.bgu.msm.util.SeededRandomPointsBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -11,9 +12,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.matsim.core.utils.geometry.geotools.MGC;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Nico on 7/7/2017.
@@ -29,14 +28,18 @@ public class MitoZone implements Id, Location {
 
     private float reductionAtBorderDamper = 0;
     private int numberOfHouseholds = 0;
+    private double householdVacancyRate = 1;
     private int schoolEnrollment = 0;
 
     private final EnumMap<Purpose, Double> tripAttraction = new EnumMap<>(Purpose.class);
     private final Multiset<JobType> employeesByType = HashMultiset.create();
 
     //TODO: Manchester use case
-    private HashMap<String, Float> poiWeightsByType = new HashMap<>();
+    private final HashMap<String, Double> poiWeightsByType = new HashMap<>();
 
+    private MitoZoneCentroid centroid;
+    private final List<MicroLocation> microDestinations = new ArrayList<>();
+    private final EnumMap<Purpose,double[]> microDestinationWeightsByPurpose = new EnumMap<>(Purpose.class);
     private final AreaTypes.SGType areaTypeSG;
     private AreaTypes.RType areaTypeR;
 
@@ -59,12 +62,55 @@ public class MitoZone implements Id, Location {
         return areaTypeSG;
     }
 
+    public void setVacancyRate(double vacancyRate) {
+        this.householdVacancyRate = vacancyRate;
+    }
+
+    public double getVacancyRate() {
+        return householdVacancyRate;
+    }
+
+    public void addPoi(MitoPoi poi) {
+        microDestinations.add(poi);
+        poiWeightsByType.merge(poi.getCode().toString(), poi.getWeight(), Double::sum);
+    }
+
+    public List<MicroLocation> getMicroDestinations() {
+        return microDestinations;
+    }
+
+    public void setMicroDestinationWeightsByPurpose(Purpose purpose, double[] weights) {
+        microDestinationWeightsByPurpose.put(purpose, weights);
+    }
+
+    public Location getRandomBuilding(Purpose purpose, Random random) {
+        if(microDestinations.isEmpty()) {
+            return centroid;
+        } else {
+            double[] destinationWeights = microDestinationWeightsByPurpose.get(purpose);
+            if(MitoUtil.getSum(destinationWeights) > 0) {
+                int idx = MitoUtil.select(destinationWeights,random);
+                return microDestinations.get(idx);
+            } else {
+                return centroid;
+            }
+        }
+    }
+
     public AreaTypes.RType getAreaTypeR() {
         return areaTypeR;
     }
 
     public void setAreaTypeR(AreaTypes.RType areaTypeR) {
         this.areaTypeR = areaTypeR;
+    }
+
+    public void setCentroid(Coordinate coordinate) {
+        centroid = new MitoZoneCentroid(zoneId,coordinate);
+    }
+
+    public MitoZoneCentroid getCentroid() {
+        return centroid;
     }
 
     public float getDistanceToNearestRailStop() {
@@ -97,8 +143,13 @@ public class MitoZone implements Id, Location {
         return this.numberOfHouseholds;
     }
 
-    public void addHousehold() {
+    public void addHousehold(MitoHousehold hh) {
         this.numberOfHouseholds++;
+        this.microDestinations.add(hh);
+    }
+
+    public void addVacantDwelling(MitoVacantDwelling dd) {
+        this.microDestinations.add(dd);
     }
 
     public int getSchoolEnrollment() {
@@ -190,7 +241,7 @@ public class MitoZone implements Id, Location {
         return zoneId;
     }
 
-    public HashMap<String, Float> getPoiWeightsByType() {
+    public HashMap<String, Double> getPoiWeightsByType() {
         return poiWeightsByType;
     }
 

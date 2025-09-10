@@ -11,7 +11,6 @@ import de.tum.bgu.msm.modules.modeChoice.ModeChoice;
 import de.tum.bgu.msm.modules.modeChoice.ModeChoiceCalibrationData;
 import de.tum.bgu.msm.modules.plansConverter.externalFlows.LongDistanceTraffic;
 import de.tum.bgu.msm.modules.scaling.TripScaling;
-import de.tum.bgu.msm.modules.timeOfDay.TimeOfDayChoice;
 import de.tum.bgu.msm.modules.tripDistribution.TripDistribution;
 import de.tum.bgu.msm.modules.tripGeneration.TripGeneration;
 import de.tum.bgu.msm.modules.tripGeneration.TripGeneratorType;
@@ -155,7 +154,7 @@ public final class TravelDemandGeneratorMCR {
 
             dayOfWeekChoice = new DayOfWeekChoice(dataSet, purposes);
 
-            timeOfDayChoice = new TimeOfDayChoice(dataSet, purposes);
+            timeOfDayChoice = new TimeOfDayChoiceMCR(dataSet, purposes);
             //until here it must be divided into two blocks - mandatory and discretionary
 
             tripScaling = new TripScaling(dataSet, purposes);

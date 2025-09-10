@@ -55,4 +55,8 @@ public interface MitoTrip extends Id{
 
     
     boolean isHomeBased();
+
+    int getActivityDurationInMinutes();
+
+    void setActivityDurationInMinutes(int activityDurationInMinutes);
 }

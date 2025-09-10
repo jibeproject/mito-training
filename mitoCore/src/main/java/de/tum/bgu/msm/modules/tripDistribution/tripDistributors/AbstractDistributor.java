@@ -100,7 +100,7 @@ public abstract class AbstractDistributor extends RandomizableConcurrentFunction
         IndexedDoubleMatrix2D probabilityMatrix = tripDistributionData.get(categoryIndex).getUtilityMatrix();
         double[] destinationProbabilities = probabilityMatrix.viewRow(trip.getTripOrigin().getZoneId()).toNonIndexedArray();
         final int destinationInternalIndex = MitoUtil.select(destinationProbabilities, random);
-        return zonesCopy.get(probabilityMatrix.getIdForInternalColumnIndex(destinationInternalIndex));
+        return zonesCopy.get(probabilityMatrix.getIdForInternalColumnIndex(destinationInternalIndex)).getRandomBuilding(purpose, random);
     }
 
 

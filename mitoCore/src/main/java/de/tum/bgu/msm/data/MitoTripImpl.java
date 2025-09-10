@@ -20,6 +20,7 @@ public class MitoTripImpl implements MitoTrip {
 
     private Mode tripMode;
 
+    private int activityDurationInMinutes = -1;
     private int departureInMinutes;
     private int departureInMinutesReturnTrip = -1;
 
@@ -120,7 +121,8 @@ public class MitoTripImpl implements MitoTrip {
 
     @Override
     public boolean isHomeBased() {
-        return !this.getTripPurpose().equals(Purpose.NHBW) &&
+        return !this.getTripPurpose().equals(Purpose.RRT) &&
+                !this.getTripPurpose().equals(Purpose.NHBW) &&
                 !this.getTripPurpose().equals(Purpose.NHBO) &&
                 !this.getTripPurpose().equals(Purpose.AIRPORT);
     }
@@ -142,5 +144,15 @@ public class MitoTripImpl implements MitoTrip {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int getActivityDurationInMinutes() {
+        return activityDurationInMinutes;
+    }
+
+    @Override
+    public void setActivityDurationInMinutes(int activityDurationInMinutes) {
+        this.activityDurationInMinutes = activityDurationInMinutes;
     }
 }

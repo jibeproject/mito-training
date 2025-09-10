@@ -92,8 +92,6 @@ public final class MitoModelMEL {
     }
 
     private void readAdditionalData() {
-        new PoiWeightsReader(dataSet).read();
-        //new ModeChoiceInputReader(dataSet).read();
         dataSet.setModeChoiceCalibrationData(new ModeChoiceCalibrationDataMEL());
         new CalibrationDataReader(dataSet).read();
         new CalibrationRegionMapReader(dataSet).read();

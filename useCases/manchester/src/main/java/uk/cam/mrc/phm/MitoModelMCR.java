@@ -62,6 +62,7 @@ public final class MitoModelMCR {
         logger.info(" Initializing MITO from SILO");
         Resources.initializeResources(propertiesFile);
         MitoModelMCR model = new MitoModelMCR(dataSet, scenarioName);
+        new PoiReader(dataSet).read();
         new OmxSkimsReaderMCR(dataSet).read();
         model.readAdditionalData();
         return model;
@@ -86,6 +87,7 @@ public final class MitoModelMCR {
         new SchoolsReader(dataSet).read();
         new HouseholdsReader(dataSet).read();
         new HouseholdsCoordReaderMCR(dataSet).read();
+        new PoiReader(dataSet).read();
         new PersonsReader7days(dataSet).read();
         dataSet.setTravelTimes(new SkimTravelTimes());
         new OmxSkimsReaderMCR(dataSet).read();
@@ -93,8 +95,6 @@ public final class MitoModelMCR {
     }
 
     private void readAdditionalData() {
-        new PoiWeightsReader(dataSet).read();
-        //new ModeChoiceInputReader(dataSet).read();
         dataSet.setModeChoiceCalibrationData(new ModeChoiceCalibrationDataMCR());
         new CalibrationDataReader(dataSet).read();
         new CalibrationRegionMapReader(dataSet).read();

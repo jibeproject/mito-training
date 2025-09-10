@@ -110,6 +110,16 @@ public class MitoTrip7days implements MitoTrip {
         return delegate.isHomeBased();
     }
 
+    @Override
+    public int getActivityDurationInMinutes() {
+        return delegate.getActivityDurationInMinutes();
+    }
+
+    @Override
+    public void setActivityDurationInMinutes(int activityDurationInMinutes) {
+        delegate.setActivityDurationInMinutes(activityDurationInMinutes);
+    }
+
     public Day getDepartureDay() {
         return departureDay;
     }

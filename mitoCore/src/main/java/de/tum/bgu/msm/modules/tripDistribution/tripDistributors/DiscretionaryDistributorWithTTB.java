@@ -89,7 +89,7 @@ public class DiscretionaryDistributorWithTTB extends AbstractDistributor {
     @Override
     protected Location findDestination(MitoTrip trip, int categoryIndex) {
         final int destinationInternalIndex = MitoUtil.select(transformedDestinationProbabilities, random);
-        return zonesCopy.get(probabilityMatrix.getIdForInternalColumnIndex(destinationInternalIndex));
+        return zonesCopy.get(probabilityMatrix.getIdForInternalColumnIndex(destinationInternalIndex)).getRandomBuilding(purpose, random);
     }
 
     @Override

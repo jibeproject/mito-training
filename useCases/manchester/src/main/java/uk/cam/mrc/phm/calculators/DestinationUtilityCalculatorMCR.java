@@ -9,31 +9,31 @@ import java.util.function.Predicate;
 
 public class DestinationUtilityCalculatorMCR extends AbstractDestinationUtilityCalculator {
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBW = {-0.10565083158495737, -0.04366834773482148, -0.029824447609604468};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBW = {-0.1039144842353891, -0.04284696640348192, -0.02963187571928102};
     private final static double IMPEDANCE_PARAM_HBW = 9;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBE = {-0.05660650656401385, -0.04730781708082465, -0.048208428932957896};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBE = {-0.057144215295112294, -0.046947496113805755, -0.04811119386540696};
     private final static double IMPEDANCE_PARAM_HBE = 28.3;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBA = {-0.12740481694077424, -0.03845635376344552, -0.03688687152506809};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBA = {-0.12696460526884276, -0.03831977013136865, -0.036709100642771816};
     private final static double IMPEDANCE_PARAM_HBA = 28.3;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBS = {-0.1302481725479954, -0.0716719631663481, -0.06272342097190081};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBS = {-0.12796183749710527, -0.07047313788533176, -0.06168685242617758};
     private final static double IMPEDANCE_PARAM_HBS = 14.5;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBR = {-0.09341006840787956, -0.046114237946687356, -0.03142021825706931};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBR = {-0.09416103189160788, -0.046123749070903455, -0.031241748892175885};
     private final static double IMPEDANCE_PARAM_HBR = 20;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_HBO = {-0.028762939944400743, -0.013710304239040036, -0.010043876974845265};
+    private final static double[] TRAVEL_DISTANCE_PARAM_HBO = {-0.028605043869105784, -0.013551373550717408, -0.009975671835593246};
     private final static double IMPEDANCE_PARAM_HBO = 53;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_RRT = {-0.12877572260971806}; //redundant?
+    private final static double[] TRAVEL_DISTANCE_PARAM_RRT = {-0.12078707624647383}; //redundant?
     private final static double IMPEDANCE_PARAM_RRT = 20; //redundant?
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_NHBW = {-0.38036997226527924, -0.05575584617535517, -0.02997957948287176};
+    private final static double[] TRAVEL_DISTANCE_PARAM_NHBW = {-0.3801587104545035, -0.05574431339524572, -0.02990590504345456};
     private final static double IMPEDANCE_PARAM_NHBW = 15.1;
 
-    private final static double[] TRAVEL_DISTANCE_PARAM_NHBO = {-0.26157597149372586, -0.04848404658490696, -0.042259625478948036};
+    private final static double[] TRAVEL_DISTANCE_PARAM_NHBO = {-0.2560855143331614, -0.047285587124733915, -0.04117865752170845};
     private final static double IMPEDANCE_PARAM_NHBO = 20;
 
 

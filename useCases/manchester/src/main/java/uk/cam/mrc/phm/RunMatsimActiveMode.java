@@ -16,9 +16,7 @@ import org.matsim.api.core.v01.population.Population;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.ControllerConfigGroup;
-import org.matsim.core.config.groups.ReplanningConfigGroup;
 import org.matsim.core.config.groups.ScoringConfigGroup.ActivityParams;
-import org.matsim.core.config.groups.ScoringConfigGroup.ModeParams;
 import org.matsim.core.config.groups.QSimConfigGroup;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
@@ -167,7 +165,7 @@ public class RunMatsimActiveMode {
 
     private static void fillBikePedConfig(Config bikePedConfig) {
         // set input file and basic controler settings
-        bikePedConfig.controller().setLastIteration(1);
+        bikePedConfig.controller().setLastIteration(0);
         bikePedConfig.controller().setWritePlansInterval(Math.max(bikePedConfig.controller().getLastIteration(), 1));
         bikePedConfig.controller().setWriteEventsInterval(Math.max(bikePedConfig.controller().getLastIteration(), 1));
         bikePedConfig.controller().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.deleteDirectoryIfExists);
@@ -184,9 +182,9 @@ public class RunMatsimActiveMode {
         mainModeList.add(TransportMode.walk);
         bikePedConfig.qsim().setMainModes(mainModeList);
         bikePedConfig.routing().setNetworkModes(mainModeList);
-        bikePedConfig.routing().removeModeRoutingParams("bike");
-        bikePedConfig.routing().removeModeRoutingParams("walk");
-        bikePedConfig.routing().removeModeRoutingParams("pt");
+        bikePedConfig.routing().removeTeleportedModeParams("bike");
+        bikePedConfig.routing().removeTeleportedModeParams("walk");
+        bikePedConfig.routing().removeTeleportedModeParams("pt");
 
 
         // BIKE ATTRIBUTES
@@ -266,21 +264,6 @@ public class RunMatsimActiveMode {
         walkConfigGroup.setAttributes(walkAttributes);
         walkConfigGroup.setWeights(walkWeights);
 
-        // set scoring parameters
-        ModeParams bicycleParams = new ModeParams(TransportMode.bike);
-        bicycleParams.setConstant(0. );
-        bicycleParams.setMarginalUtilityOfDistance(-0.0004 );
-        bicycleParams.setMarginalUtilityOfTraveling(-6.0 );
-        bicycleParams.setMonetaryDistanceRate(0. );
-        bikePedConfig.scoring().addModeParams(bicycleParams);
-
-        ModeParams walkParams = new ModeParams(TransportMode.walk);
-        walkParams.setConstant(0. );
-        walkParams.setMarginalUtilityOfDistance(-0.0004 );
-        walkParams.setMarginalUtilityOfTraveling(-6.0 );
-        walkParams.setMonetaryDistanceRate(0. );
-        bikePedConfig.scoring().addModeParams(walkParams);
-
         ActivityParams homeActivity = new ActivityParams("home").setTypicalDuration(12 * 60 * 60);
         bikePedConfig.scoring().addActivityParams(homeActivity);
 
@@ -301,22 +284,6 @@ public class RunMatsimActiveMode {
 
         ActivityParams airportActivity = new ActivityParams("airport").setTypicalDuration(1 * 60 * 60);
         bikePedConfig.scoring().addActivityParams(airportActivity);
-
-        //Set strategy
-        bikePedConfig.replanning().setMaxAgentPlanMemorySize(5);
-        {
-            ReplanningConfigGroup.StrategySettings strategySettings = new ReplanningConfigGroup.StrategySettings();
-            strategySettings.setStrategyName("ChangeExpBeta");
-            strategySettings.setWeight(0.8);
-            bikePedConfig.replanning().addStrategySettings(strategySettings);
-        }
-
-        {
-            ReplanningConfigGroup.StrategySettings strategySettings = new ReplanningConfigGroup.StrategySettings();
-            strategySettings.setStrategyName("ReRoute");
-            strategySettings.setWeight(0.2);
-            bikePedConfig.replanning().addStrategySettings(strategySettings);
-        }
 
 
         bikePedConfig.transit().setUsingTransitInMobsim(false);
